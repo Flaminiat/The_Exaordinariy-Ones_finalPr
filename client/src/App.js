@@ -6,9 +6,9 @@ import { Route } from "react-router-dom";
 
 import NavBar from "./components/nav/nav.component";
 import HomePage from "./components/HomePage/homepage.component";
-import About from "./components/pages/About";
-import Home from "./components/pages/Home";
-import Ourwork from "./components/pages/Ourwork";
+import About from "./components/pages/About/About";
+import Home from "./components/pages/Home/Home";
+import Ourwork from "./components/pages/OurWork/Ourwork";
 
 class App extends Component {
   
