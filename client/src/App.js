@@ -6,7 +6,7 @@ import {Switch, Route } from "react-router-dom";
 
 import NavBar from "./components/nav/nav.component";
 import HomePage from "./components/HomePage/homepage.component";
-import About from "./components/pages/About";
+import About from "./components/pages/About/About";
 import Ourwork from "./components/pages/Ourwork";
 import AutoCompleteText from "./components/AutoCompleteSearch/AutoCompleteText";
 
