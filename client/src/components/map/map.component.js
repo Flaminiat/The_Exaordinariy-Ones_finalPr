@@ -1,59 +1,63 @@
 import React, { Component } from 'react'
 import Leaflet from 'leaflet';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import "./map.css";
-import { iconCyf } from './icon';
-
+import DrawlineReg from "./drawLineReg";
+import DrawlineGlo from "./drawLineGlo";
+import NationalMarker from "./nationalMarker";
 
 Leaflet.Icon.Default.imagePath =
   '../node_modules/leaflet'
 
 delete Leaflet.Icon.Default.prototype._getIconUrl;
 
-
-
 export default class MapIt extends Component {
   constructor(props) {
     super(props);
-  this.state = {
-    lat: 25.257017,
-    lng: 30.077524,
-    zoom: 2,
-    position:
-      [41.90121, 12.50379]
-     
-}
-    this.onClick = this.addNationalMarkers.bind(this);
-}
+    this.state = {
+      lat: 25.257017,
+      lng: 30.077524,
+      zoom: 2,
+      mapType: "national"
+    }
+    };
 
-  
-  addNationalMarkers = () => {
-    console.log("add national level");
-    console.log(this.state.position);
-    this.setState({
-      position: [21.90121, 52.50379]
-});
-  }
-  
+  changeMapType = (type) => {
+    this.setState({mapType : type})
+  };
+
   render() {
-  
-    const visual = [this.state.lat, this.state.lng]
+// national regional global
     return (
       <div>
-      <Map className="map" center={visual} zoom={this.state.zoom} style={{ height: '500px' }}>
-        <TileLayer
-          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-          <Marker position={this.state.position} icon={iconCyf}>
-          <Popup>
-            The Extraordinary Ones
-        </Popup>
-        </Marker>
-      </Map>
-        <button className="btn btn-primary" onClick={this.addNationalMarkers}>Show national level</button>
+        {this.state.mapType == "national" && <NationalMarker /> }
+        {this.state.mapType == "regional" && <DrawlineReg /> }
+        {this.state.mapType == "global" && <DrawlineGlo />}
+
+         
+         
+        <button
+          className="btn btn-primary pt-10" 
+          onClick={() => this.changeMapType("national")}
+        >
+          Show national level
+                       </button>
+
+        <button
+          className="btn btn-primary pt-10" 
+
+          onClick={() => this.changeMapType("regional")}
+        >
+          Show regional level
+                       </button>
+        <button
+          className="btn btn-primary pt-10" 
+
+          onClick={() => this.changeMapType("global")}
+        >
+          Show global level
+                       </button>
       </div>
-    )
+    );
   }
 }
