@@ -14,14 +14,9 @@ const NavBar = () => (
     <NavLink to="/">
       <img className="logo" src={Logo} alt="logo" />
     </NavLink>
-    <NavLink className="nav" to="/home">
-      Home
-    </NavLink>
-
     <NavLink className="nav" to="/ourwork">
-      OUR WORK
+      Our Work
     </NavLink>
-
     <NavLink className="nav" to="/about">
       About
     </NavLink>

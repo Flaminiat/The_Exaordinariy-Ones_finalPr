@@ -8,7 +8,6 @@ import Map from "../map/map.component";
 const HomePage = ()=>{
 	return (
     <div>
-    
       <Map />
       <Footer />
     </div>
