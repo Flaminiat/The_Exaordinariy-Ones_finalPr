@@ -16,6 +16,7 @@ export default class HomeContainer extends Component {
       isShown: 0
     };
   }
+  
   async componentDidMount() {
     const countries = await (
       await fetch("http://localhost:3100/countries")
@@ -24,32 +25,33 @@ export default class HomeContainer extends Component {
     this.setState({ countries });
   }
 
-                 handleChange = e => {
-                   this.setState({
-                     searchField: e.target.value,
-                     isShown: 1
-                   });
-                 };
+handleChange = e => {
+    this.setState({
+      searchField: e.target.value,
+      isShown: 1
+    });
+  };
 
-                 showIt = number => {
-                   this.setState({ isShown: 1 });
-                 };
-                 render() {
-                   console.log(this.state.countries);
+showIt = number => {
+  this.setState({ isShown: 1 });
+};
+render() {
+  console.log('home')
+  console.log(this.state.countries);
 
 
-                   
-                   return (
-                     <div className="jumbotron">
-                       <h1 className="heading">
-                         Search your country to find your national Caritas
-                       </h1>
+  
+  return (
+    <div className="jumbotron">
+      <h1 className="heading">
+        Search your country to find your national Caritas
+      </h1>
 
-                       <div className="App-Component">
-                         <AutoCompleteText countries={this.state.countries} />
-                       </div>
-                      
-                     </div>
-                   );
-                 }
-               }
+      <div className="App-Component">
+        <AutoCompleteText countries={this.state.countries} />
+      </div>
+    
+    </div>
+  );
+}
+}

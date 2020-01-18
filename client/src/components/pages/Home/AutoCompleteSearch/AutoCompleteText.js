@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import './AutoCompleteText.css';
-import ResultsContainer from "../resultsContainer";
+import {Results} from "../resultsContainer";
+import Info from "../Search/info.js";
+import Leaflet from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { Map, TileLayer, Marker, Popup } from "react-leaflet";
+import { iconCyf } from "../icon";
+
+
 
 export default class AutoCompleteText extends Component {
   constructor(props) {
     super(props);
     this.state = {
       suggestions: [],
-      text: ""
+      text: "",
+      selectedCountry: {},
+      
     };
   }
 
@@ -27,16 +36,30 @@ export default class AutoCompleteText extends Component {
   };
 
   suggestionsSelected(value) {
+    console.log("entered here");
     this.setState(() => ({
       text: value,
       suggestions: []
     }));
   }
 
+  handleSubmit= (e) => {
+    e.preventDefault();
+    console.log("handle submit");
+    console.log(this.state.text);
+    console.log(this.props.countries)
+    this.props.countries.map(country => {
+      if(country.Country === this.state.text) {
+        this.setState(() => ({
+          selectedCountry: country        
+        }));
+      }
+    })
+  }
   renderSuggestions() {
 
     const { suggestions } = this.state;
-
+    
     if (suggestions.length === 0) {
       return null;
     }
@@ -55,11 +78,16 @@ export default class AutoCompleteText extends Component {
   }
 
   render() {
+    console.log('autocompletetext')
     console.log(this.state.text);
+    console.log(this.props.countries);
+    console.log(this.state.selectedCountry);
     const { text } = this.state;
+    console.log([parseFloat(this.state.selectedCountry.latitude), parseFloat(this.state.selectedCountry.longitude)]);
     return (
       <div>
       <div className="AutoCompleteText">
+          <form name="myForm" onSubmit={this.handleSubmit} >
         <input
           placeholder='Search For Countries'
           value={text}
@@ -67,10 +95,64 @@ export default class AutoCompleteText extends Component {
           type="text"
         />
         {this.renderSuggestions()}
+            <button type="submit" ></button>
+          </form>
       </div>
-      <div>
-       < ResultsContainer countrytoShow={this.state.text}/>
-      </div>
+
+        {this.state.selectedCountry
+          ? <div>
+
+            {/* {this.state.selectedCountry.map(({ Country, City, Organisation, Address, Phone, Fax, id }) => (
+              <div key={id}> */}
+            <div>
+              <div className="country">
+                <label>Country: {this.state.selectedCountry.Country}</label>
+                <div className="organisation">
+                  <label>Organisation name: {this.state.selectedCountry.Organisation}</label>
+                  <div className="city">
+                    <label>City: {this.state.selectedCountry.City}</label>
+                    <div className="address">
+                      <label>Address: {this.state.selectedCountry.Address}</label>
+                      <h5 className="phone">
+                        <label>Phone: {}</label>
+                        <span className="fax">
+                          <label>Fax: {this.state.selectedCountry.Fax}</label>
+                        </span>
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <Map
+                  className="map"
+                  center={[25.257017, 30.077524]}
+                  zoom={2}
+                  style={{ height: "500px" }}
+                  maxZoom={20}
+                  attributionControl={true}
+                  zoomControl={true}
+                  doubleClickZoom={true}
+                  scrollWheelZoom={true}
+                  dragging={true}
+                  animate={true}
+                  easeLinearity={0.35}
+                >
+                  <TileLayer
+                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  
+                </Map>
+
+              </div>
+            </div>
+              {/* </div>
+            ) */}
+            )}
+          </div>
+        : <div></div>
+        }
       </div >
     );
   }
