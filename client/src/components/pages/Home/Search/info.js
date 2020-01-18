@@ -9,6 +9,7 @@ export default class Info extends Component {
                    super(props);
                    this.state = {
                      country: props.country,
+                     organisation: props.organisation,
                      city: props.city,
                      address: props.address,
                      phone: props.phone,
@@ -20,6 +21,8 @@ export default class Info extends Component {
                      <div>
                        <div className="country">
                          <label>Country: {this.state.country}</label>
+                         <div className="organisation">
+                           <label>Organisation name: {this.state.organisation}</label>
                          <div className="city">
                            <label>City: {this.state.city}</label>
                            <div className="address">
@@ -31,6 +34,7 @@ export default class Info extends Component {
                                </span>
                              </h5>
                            </div>
+                         </div>
                          </div>
                        </div>
                      </div>
