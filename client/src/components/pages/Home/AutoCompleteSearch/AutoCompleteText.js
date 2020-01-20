@@ -6,7 +6,8 @@ import Leaflet from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import { iconCyf } from "../icon";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
 
 
 export default class AutoCompleteText extends Component {
@@ -16,6 +17,7 @@ export default class AutoCompleteText extends Component {
       suggestions: [],
       text: "",
       selectedCountry: {},
+      index: 0
       
     };
   }
@@ -51,7 +53,8 @@ export default class AutoCompleteText extends Component {
     this.props.countries.map(country => {
       if(country.Country === this.state.text) {
         this.setState(() => ({
-          selectedCountry: country        
+          selectedCountry: country,
+          index: 1        
         }));
       }
     })
@@ -87,7 +90,7 @@ export default class AutoCompleteText extends Component {
     return (
       <div>
       <div className="AutoCompleteText">
-          <form name="myForm" onSubmit={this.handleSubmit} >
+          <form className="searchForm" name="myForm" onSubmit={this.handleSubmit} >
         <input
           placeholder='Search For Countries'
           value={text}
@@ -95,34 +98,16 @@ export default class AutoCompleteText extends Component {
           type="text"
         />
         {this.renderSuggestions()}
-            <button type="submit" ></button>
+            <Button className="mt-5" type="submit" variant="outline-info" size="lg" block>Search</Button>
           </form>
       </div>
 
-        {this.state.selectedCountry
+        {this.state.index == 1
           ? <div>
 
             {/* {this.state.selectedCountry.map(({ Country, City, Organisation, Address, Phone, Fax, id }) => (
               <div key={id}> */}
             <div>
-              <div className="country">
-                <label>Country: {this.state.selectedCountry.Country}</label>
-                <div className="organisation">
-                  <label>Organisation name: {this.state.selectedCountry.Organisation}</label>
-                  <div className="city">
-                    <label>City: {this.state.selectedCountry.City}</label>
-                    <div className="address">
-                      <label>Address: {this.state.selectedCountry.Address}</label>
-                      <h5 className="phone">
-                        <label>Phone: {}</label>
-                        <span className="fax">
-                          <label>Fax: {this.state.selectedCountry.Fax}</label>
-                        </span>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div>
                 <Map
                   className="map"
@@ -142,14 +127,39 @@ export default class AutoCompleteText extends Component {
                     attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
-                  
+                  <Marker
+                    key={this.state.selectedCountry.Country}
+                    position={[parseFloat(this.state.selectedCountry.latitude), parseFloat(this.state.selectedCountry.longitude)]}
+                    icon={iconCyf}
+
+                  >
+                    <Popup>{this.state.selectedCountry.Organisation}</Popup>
+                  </Marker>
                 </Map>
 
               </div>
+              <div className="country">
+                <label>Country: {this.state.selectedCountry.Country}</label>
+                <div className="organisation">
+                  <label>Organisation name: {this.state.selectedCountry.Organisation}</label>
+                  <div className="city">
+                    <label>City: {this.state.selectedCountry.City}</label>
+                    <div className="address">
+                      <label>Address: {this.state.selectedCountry.Address}</label>
+                      <h5 className="phone">
+                        <label>Phone: {}</label>
+                        <span className="fax">
+                          <label>{this.state.selectedCountry.Fax}</label>
+                        </span>
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
             </div>
               {/* </div>
             ) */}
-            )}
           </div>
         : <div></div>
         }
